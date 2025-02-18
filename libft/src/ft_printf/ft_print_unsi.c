@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_print_unsi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2024/09/17 16:11:35 by dcampas-         ###   ########.fr       */
+/*   Created: 2024/10/09 11:06:22 by dcampas-          #+#    #+#             */
+/*   Updated: 2024/10/09 14:05:07 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/ft_printf.h"
 #include "../../inc/libft.h"
 
-int	ft_isdigit(int c)
+int	ft_print_unsi(unsigned int n)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
-}
+	int	count;
 
-/*int main(int argc, char **argv)
-{
-	if (argc == 2)
-		printf("%d\n",ft_isdigit(argv[1][0]));
-	else 
-		return 0;
-}*/
+	count = 0;
+	count = ft_putnbr_base(n, "0123456789");
+	return (count);
+}

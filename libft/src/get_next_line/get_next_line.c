@@ -1,98 +1,130 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/29 17:26:20 by dcampas-          #+#    #+#             */
+/*   Updated: 2024/11/11 12:58:37 by dcampas-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char *find_new_line(char *str)
+#include "../../inc/get_next_line.h"
+#include "../../inc/libft.h"
+
+char	*extract_line(char *basin_buffer)
 {
-    if (!str)
-        return (NULL);
-    while (*str)
-    {
-        if (*str == '\n')
-            return (str);
-        str++;
-    }
-    return (NULL);
+	int		i;
+	int		j;
+	char	*line;
+
+	if (!basin_buffer || basin_buffer[0] == '\0')
+		return (NULL);
+	i = 0;
+	while (basin_buffer[i] && basin_buffer[i] != '\n')
+		i++;
+	line = (char *)malloc(i + 2);
+	if (!line)
+		return (NULL);
+	j = 0;
+	while (j < i)
+	{
+		line[j] = basin_buffer[j];
+		j++;
+	}
+	if (basin_buffer[i] == '\n')
+		line[j++] = '\n';
+	line[j] = '\0';
+	return (line);
 }
 
-char *create_line(char *buffer, char *new_line)
+char	*obtain_remaining(char *basin_buffer)
 {
-    size_t line_length;
-    char *line;
+	int		i;
+	int		j;
+	char	*remaining;
 
-    if (!new_line || !buffer)
-        return (NULL);
-    line_length = new_line - buffer + 1; // +1 para incluir el '\n'
-    line = malloc(line_length + 1); // +1 para el terminador nulo
-    if (!line)
-        return (NULL);
-    ft_strncpy(line, buffer, line_length);
-    line[line_length] = '\0'; // Asegúrate de que la línea esté terminada correctamente
-    return (line);
+	if (!basin_buffer)
+		return (NULL);
+	i = 0;
+	while (basin_buffer[i] && basin_buffer[i] != '\n')
+		i++;
+	if (basin_buffer[i] == '\n')
+		i++;
+	remaining = (char *)malloc(ft_strlen(basin_buffer) - i + 1);
+	if (!remaining)
+	{
+		free(basin_buffer);
+		return (NULL);
+	}
+	j = 0;
+	while (basin_buffer[i])
+		remaining[j++] = basin_buffer[i++];
+	remaining[j] = '\0';
+	free(basin_buffer);
+	return (remaining);
 }
 
-char *read_add(int fd, char *buffer)
+void	*append_buffer(char *basin_buffer, char *read_buffer)
 {
-    char temp[BUFFER_SIZE + 1];
-    ssize_t bytes_read;
-    char *new_buffer;
+	char	*temp;
 
-    bytes_read = read(fd, temp, BUFFER_SIZE);
-    if (bytes_read < 0)
-    {
-        free(buffer);
-        return (NULL); // Manejo de error de lectura
-    }
-    else if (bytes_read == 0) // Fin de archivo
-    {
-        if (buffer && buffer[0] != '\0')
-            return (buffer); // Devolver buffer si no está vacío
-        free(buffer);
-        return (NULL); // Devolver NULL si el buffer está vacío
-    }
-    temp[bytes_read] = '\0'; // Asegúrate de que `temp` esté terminada
-    new_buffer = ft_strjoin(buffer, temp);
-    free(buffer);
-    return (new_buffer);
+	temp = ft_strjoin(basin_buffer, read_buffer);
+	if (!temp)
+		return (NULL);
+	free(basin_buffer);
+	return (temp);
 }
 
-char *get_next_line(int fd)
+char	*read_from_file(char *basin_buffer, int fd)
 {
-    static char *buffer = NULL;
-    char *new_line;
-    char *line;
+	int		bytes_read;
+	char	*cup_buffer;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-        return (NULL);
+	cup_buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (!cup_buffer)
+		return (NULL);
+	bytes_read = read(fd, cup_buffer, BUFFER_SIZE);
+	if (bytes_read == -1)
+	{
+		free(cup_buffer);
+		return (free(basin_buffer), basin_buffer = NULL, NULL);
+	}
+	while (bytes_read > 0)
+	{
+		cup_buffer[bytes_read] = '\0';
+		basin_buffer = append_buffer(basin_buffer, cup_buffer);
+		if (ft_strchr(basin_buffer, '\n'))
+			break ;
+		bytes_read = read(fd, cup_buffer, BUFFER_SIZE);
+	}
+	free(cup_buffer);
+	if (bytes_read == -1)
+		return (NULL);
+	return (basin_buffer);
+}
 
-    // Inicializar buffer estático en NULL si es la primera llamada
-    if (!buffer)
-    {
-        buffer = malloc(1);
-        if (!buffer)
-            return (NULL);
-        buffer[0] = '\0'; // Asegúrate de que el buffer esté vacío inicialmente
-    }
+char	*get_next_line(int fd)
+{
+	static char	*basin_buffer;
+	char		*line;
+	char		*new_basin_buffer;
 
-    new_line = find_new_line(buffer);
-    while (!new_line)
-    {
-        buffer = read_add(fd, buffer);
-        if (!buffer) // Manejar caso de error o EOF
-            return (NULL);
-        new_line = find_new_line(buffer);
-    }
-
-    line = create_line(buffer, new_line);
-    if (!line)
-    {
-        free(buffer);
-        buffer = NULL; // Limpiar buffer en caso de error
-        return (NULL);
-    }
-
-    // Crear nuevo buffer a partir de la nueva línea encontrada
-    char *new_buffer = (new_line[1] != '\0') ? ft_strdup(new_line + 1) : NULL;
-    free(buffer);
-    buffer = new_buffer; // Actualizar el buffer estático
-
-    return (line);
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!basin_buffer)
+		basin_buffer = ft_calloc(1, sizeof(char));
+	if (!ft_strchr(basin_buffer, '\n'))
+		basin_buffer = read_from_file(basin_buffer, fd);
+	if (!basin_buffer)
+		return (NULL);
+	line = extract_line(basin_buffer);
+	if (!line)
+		return (free(basin_buffer), basin_buffer = NULL, NULL);
+	new_basin_buffer = obtain_remaining(basin_buffer);
+	if (!new_basin_buffer)
+		return (free(line), free(basin_buffer), basin_buffer = NULL, NULL);
+	basin_buffer = new_basin_buffer;
+	return (line);
 }

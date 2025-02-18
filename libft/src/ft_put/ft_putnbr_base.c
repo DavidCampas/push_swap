@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_putnbr_base.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2024/09/17 16:11:35 by dcampas-         ###   ########.fr       */
+/*   Created: 2025/01/10 15:49:06 by dcampas-          #+#    #+#             */
+/*   Updated: 2025/01/10 15:49:08 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/libft.h"
 
-int	ft_isdigit(int c)
+int	ft_putnbr_base(unsigned long long n, const char *base)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
-}
+	unsigned long long	base_len;
+	int					count;
 
-/*int main(int argc, char **argv)
-{
-	if (argc == 2)
-		printf("%d\n",ft_isdigit(argv[1][0]));
-	else 
-		return 0;
-}*/
+	base_len = ft_strlen(base);
+	count = 0;
+	if (base_len < 2)
+		return (0);
+	if (n >= base_len)
+	{
+		count += ft_putnbr_base(n / base_len, base);
+	}
+	count += ft_putchar(base[n % base_len]);
+	return (count);
+}

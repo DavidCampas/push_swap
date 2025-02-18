@@ -1,29 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2024/09/17 16:11:35 by dcampas-         ###   ########.fr       */
+/*   Created: 2025/01/31 12:10:43 by dcampas-          #+#    #+#             */
+/*   Updated: 2025/01/31 12:11:18 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/libft.h"
 
-int	ft_isdigit(int c)
+void	ft_putchar(char c)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
+	write(1, &c, 1);
 }
-
-/*int main(int argc, char **argv)
-{
-	if (argc == 2)
-		printf("%d\n",ft_isdigit(argv[1][0]));
-	else 
-		return 0;
-}*/

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../inc/libft.h"
-#include <stdlib.h>
 #include <stdint.h>
 
 void	*ft_calloc(size_t nmemb, size_t size)
@@ -28,3 +27,25 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	ft_bzero(ptr, total_size);
 	return (ptr);
 }
+/*
+int main()
+{
+    int *array;
+    size_t count = 5;
+
+    array = ft_calloc(count, sizeof(int));
+    if (array == NULL)
+    {
+        printf("Error al asignar memoria\n");
+        return 1; 
+    }
+    
+	for (size_t i = 0; i < count; i++)
+    {
+        printf("array[%zu] = %d\n", i, array[i]); // Todos deberían ser 0
+    }
+
+    free(array);
+
+    return 0;
+}*/

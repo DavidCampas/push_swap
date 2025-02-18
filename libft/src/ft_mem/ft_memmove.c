@@ -39,3 +39,13 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	}
 	return (dest);
 }
+/*
+int main()
+{
+	char dest[10];
+	char src[] = "0123456789";
+	
+	ft_memmove(dest, src, 10);
+	printf("%s", dest);
+	return 0;
+}*/

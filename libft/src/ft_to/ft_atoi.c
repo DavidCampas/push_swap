@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../../inc/libft.h"
 //#include <stdlib.h>
 
 long	ft_atoi(const char *s)
-{	
-	int	sign;
+{
+	int		sign;
 	long	result;
 
 	sign = 1;

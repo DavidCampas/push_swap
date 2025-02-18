@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   rotate_both.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dcampas- <dcampas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/30 15:39:14 by dcampas-          #+#    #+#             */
-/*   Updated: 2024/10/01 12:14:52 by dcampas-         ###   ########.fr       */
+/*   Created: 2025/01/10 17:22:19 by dcampas-          #+#    #+#             */
+/*   Updated: 2025/02/12 13:12:19 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/libft.h"
+#include "../../inc/push_swap.h"
 
-void	ft_striteri(char *s, void (*f)(unsigned int, char*))
+void	rotate_both(t_stack_node **a,
+		t_stack_node **b,
+		t_stack_node *cheapest_node)
 {
-	unsigned int	i;
-
-	if (!s || !f)
-		return ;
-	i = 0;
-	while (s[i])
+	while (*b != cheapest_node->target_node
+		&& *a != cheapest_node)
 	{
-		f(i, &s[i]);
-		i++;
+		rr(a, b, false);
 	}
+	current_index(*a);
+	current_index(*b);
 }

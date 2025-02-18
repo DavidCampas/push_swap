@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isdigit.c                                       :+:      :+:    :+:   */
+/*   ft_print_str.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/17 15:23:56 by dcampas-          #+#    #+#             */
-/*   Updated: 2024/09/17 16:11:35 by dcampas-         ###   ########.fr       */
+/*   Created: 2024/10/08 18:02:35 by dcampas-          #+#    #+#             */
+/*   Updated: 2024/10/10 12:24:46 by dcampas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../../inc/ft_printf.h"
 #include "../../inc/libft.h"
 
-int	ft_isdigit(int c)
+int	ft_print_str(va_list	args)
 {
-	if (c >= '0' && c <= '9')
-		return (1);
-	else
-		return (0);
-}
+	char	*str;
+	int		count;
 
-/*int main(int argc, char **argv)
-{
-	if (argc == 2)
-		printf("%d\n",ft_isdigit(argv[1][0]));
-	else 
-		return 0;
-}*/
+	str = va_arg(args, char *);
+	count = 0;
+	if (str == NULL)
+	{
+		ft_putstr_printf("(null)");
+		return (6);
+	}
+	while (*str)
+	{
+		ft_putchar_printf(*str);
+		str++;
+		count++;
+	}
+	return (count);
+}

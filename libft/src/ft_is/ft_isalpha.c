@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "../../inc/libft.h"
 
 int	ft_isalpha(int c)
 {
@@ -19,7 +19,7 @@ int	ft_isalpha(int c)
 	else
 		return (0);
 }
-
+/*
 int main()
 {
 	char ch = 'A';
@@ -30,4 +30,4 @@ int main()
         printf("%c no es una letra del alfabeto.\n", ch);
 
     return 0;
-}
+}*/

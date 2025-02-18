@@ -1,9 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dcampas- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/10 15:29:27 by dcampas-          #+#    #+#             */
+/*   Updated: 2025/01/10 15:30:43 by dcampas-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
 # define BUFFER_SIZE 42
-#endif
 
 # include <stdio.h>
 # include <fcntl.h>
@@ -11,14 +21,9 @@
 # include <stdlib.h>
 # include <string.h>
 
+char	*get_next_line(int fd);
+char	*read_add(int fd, char *buffer);
+char	*find_new_line(char *str);
+char	*create_line(char *buffer, char *new_line);
 
-char    *get_next_line(int fd);
-char    *read_add(int fd, char *buffer);
-char    *find_new_line(char *str);
-char    *create_line(char *buffer, char *new_line);
-
-char    *ft_strncpy(char *dest, const char *src, unsigned int n);
-char    *ft_strjoin (const char *s1, const char *s2);
-void    *ft_memcpy(void *dest, const void *src, size_t n);
-char    *ft_strdup(const char *s);
 #endif
